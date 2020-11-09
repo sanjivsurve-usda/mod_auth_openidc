@@ -1309,12 +1309,14 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 	if (str == NULL)
 		return FALSE;
 
+	oidc_debug(r, "encoded string: %s", str);
     tbp_len = oidc_base64url_decode(r->pool, &tbp, str);
 	if (tbp_len <= 0) {
 			oidc_warn(r,
 					"Provided encoded Token variable could not be decoded");
 			return FALSE;
 	}
+	oidc_debug(r, "decoded string: %s with len: %d", tbp, tbp_len);
 
 	json_error_t json_error;
 	*json = json_loads(tbp, 0, &json_error);
