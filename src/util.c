@@ -1306,6 +1306,8 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
     char *tbp = NULL;
 	int tbp_len = -1;
 
+    oidc_debug(r, "Inside oidc_util_decode_json_object");
+
 	if (str == NULL)
 		return FALSE;
 
