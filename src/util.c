@@ -1303,11 +1303,21 @@ static apr_byte_t oidc_util_check_json_error(request_rec *r, json_t *json) {
 apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 		json_t **json) {
 
+    char *tbp = NULL;
+	int tbp_len = -1;
+
 	if (str == NULL)
 		return FALSE;
 
+    tbp_len = oidc_base64url_decode(r->pool, &tbp, str);
+	if (tbp_len <= 0) {
+			oidc_warn(r,
+					"Provided encoded Token variable could not be decoded");
+			return FALSE;
+	}
+
 	json_error_t json_error;
-	*json = json_loads(str, 0, &json_error);
+	*json = json_loads(tbp, 0, &json_error);
 
 	/* decode the JSON contents of the buffer */
 	if (*json == NULL) {
