@@ -1308,8 +1308,6 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 
     oidc_warn(r, "Inside oidc_util_decode_json_object warn");
     oidc_error(r, "Inside oidc_util_decode_json_object error");
-    ap_log_error(APLOG_MARK, APLOG_ERR, 0, r,"Inside oidc_util_decode_json_object ap error");
-    printf("Inside oidc_util_decode_json_object printf");
 
 	if (str == NULL)
 		return FALSE;
