@@ -540,8 +540,9 @@ static apr_byte_t oidc_unsolicited_proto_state(request_rec *r, oidc_cfg *c,
 		const char *state, oidc_proto_state_t **proto_state) {
 
 	char *alg = NULL;
-	oidc_debug(r, "enter: state header=%s",
+	oidc_warn(r, "enter: state header=%s",
 			oidc_proto_peek_jwt_header(r, state, &alg));
+    oidc_warn(r, "state=%s",state);
 
 	oidc_jose_error_t err;
 	oidc_jwk_t *jwk = NULL;
@@ -560,7 +561,7 @@ static apr_byte_t oidc_unsolicited_proto_state(request_rec *r, oidc_cfg *c,
 	}
 
 	oidc_jwk_destroy(jwk);
-	oidc_debug(r, "successfully parsed JWT from state");
+	oidc_warn(r, "successfully parsed JWT from state");
 
 	if (jwt->payload.iss == NULL) {
 		oidc_error(r, "no \"%s\" could be retrieved from JWT state, aborting",
@@ -659,7 +660,7 @@ static apr_byte_t oidc_unsolicited_proto_state(request_rec *r, oidc_cfg *c,
 	/* store it in the cache for the calculated duration */
 	oidc_cache_set_jti(r, jti, jti, apr_time_now() + jti_cache_duration);
 
-	oidc_debug(r,
+	oidc_warn(r,
 			"jti \"%s\" validated successfully and is now cached for %" APR_TIME_T_FMT " seconds",
 			jti, apr_time_sec(jti_cache_duration));
 
@@ -678,7 +679,7 @@ static apr_byte_t oidc_unsolicited_proto_state(request_rec *r, oidc_cfg *c,
 	}
 
 	oidc_jwk_destroy(jwk);
-	oidc_debug(r, "successfully verified state JWT");
+	oidc_warn(r, "successfully verified state JWT");
 
 	*proto_state = oidc_proto_state_new();
 	oidc_proto_state_set_issuer(*proto_state, jwt->payload.iss);
@@ -814,15 +815,19 @@ static int oidc_clean_expired_state_cookies(request_rec *r, oidc_cfg *c,
 static apr_byte_t oidc_restore_proto_state(request_rec *r, oidc_cfg *c,
 		const char *state, oidc_proto_state_t **proto_state) {
 
-	oidc_debug(r, "enter");
+	oidc_warn(r, "enter");
+	oidc_warn(r, "state: %s",state);
 
 	const char *cookieName = oidc_get_state_cookie_name(r, state);
+	oidc_warn(r, "cookieName: %s",cookieName);
 
 	/* clean expired state cookies to avoid pollution */
 	oidc_clean_expired_state_cookies(r, c, cookieName, FALSE);
 
 	/* get the state cookie value first */
 	char *cookieValue = oidc_util_get_cookie(r, cookieName);
+	oidc_warn(r, "cookieValue: %s",cookieValue);
+
 	if (cookieValue == NULL) {
 		oidc_error(r, "no \"%s\" state cookie found", cookieName);
 		return oidc_unsolicited_proto_state(r, c, state, proto_state);
@@ -836,6 +841,7 @@ static apr_byte_t oidc_restore_proto_state(request_rec *r, oidc_cfg *c,
 		return FALSE;
 
 	const char *nonce = oidc_proto_state_get_nonce(*proto_state);
+	oidc_warn(r, "nonce: %s",nonce);
 
 	/* calculate the hash of the browser fingerprint concatenated with the nonce */
 	char *calc = oidc_get_browser_state_hash(r, c, nonce);
@@ -871,7 +877,7 @@ static apr_byte_t oidc_restore_proto_state(request_rec *r, oidc_cfg *c,
 	oidc_proto_state_set_state(*proto_state, state);
 
 	/* log the restored state object */
-	oidc_debug(r, "restored state: %s",
+	oidc_warn(r, "restored state: %s",
 			oidc_proto_state_to_string(r, *proto_state));
 
 	/* we've made it */
