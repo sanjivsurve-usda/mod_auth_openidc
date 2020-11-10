@@ -1305,9 +1305,9 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 
     char *tbp = NULL;
 	int tbp_len = -1;
+	char  *str2;
 
     oidc_warn(r, "Inside oidc_util_decode_json_object warn");
-    oidc_error(r, "Inside oidc_util_decode_json_object error");
 
 	if (str == NULL)
 		return FALSE;
@@ -1320,7 +1320,19 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 
 		oidc_warn(r, "JSON parsing error, so going with decode option");
 		oidc_warn(r, "encoded string: %s", str);
-		tbp_len = oidc_base64url_decode(r->pool, &tbp, str);
+
+
+		str2 = strdup(str);
+		char* tokens = strtok(str2, ".");
+		while(tokens != NULL) {
+		    oidc_warn(r, "token: %s", tokens);
+		    tokens = strtok(NULL, ".");
+		    oidc_warn(r, "token: %s", tokens);
+		    str2 = tokens;
+		    break;
+		}
+
+		tbp_len = oidc_base64url_decode(r->pool, &tbp, str2);
 		if (tbp_len <= 0) {
 			oidc_warn(r, "Provided encoded Token variable could not be decoded");
 			return FALSE;
