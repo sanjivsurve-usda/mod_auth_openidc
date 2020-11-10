@@ -795,13 +795,17 @@ apr_byte_t oidc_jwt_parse(apr_pool_t *pool, const char *input_json,
 	cjose_err cjose_err;
 	char *s_json = NULL;
 
+    oidc_jose_error(err, "input_json: %s", input_json);
 	if (oidc_jwe_decrypt(pool, input_json, keys, &s_json, err, FALSE) == FALSE)
 		return FALSE;
 
+    oidc_jose_error(err, "oidc_jwe_decrypt json: %s", s_json);
 	*j_jwt = oidc_jwt_new(pool, FALSE, FALSE);
 	if (*j_jwt == NULL)
 		return FALSE;
 	oidc_jwt_t *jwt = *j_jwt;
+
+	oidc_jose_error(err, "oidc_jwt_new jwt: %s", j_jwt);
 
 	jwt->cjose_jws = cjose_jws_import(s_json, strlen(s_json), &cjose_err);
 	if (jwt->cjose_jws == NULL) {
@@ -1456,7 +1460,7 @@ static char *internal_cjose_jwk_to_json(apr_pool_t *pool, oidc_jwk_t *oidc_jwk,
 		return NULL;
 	}
 
-	// get current 
+	// get current
 	cjose_jwk_json = cjose_jwk_to_json(oidc_jwk->cjose_jwk, TRUE, &err);
 
 	if (cjose_jwk_json == NULL) {
