@@ -325,7 +325,7 @@ static apr_byte_t oidc_provider_static_config(request_rec *r, oidc_cfg *c,
 	} else {
 
 		oidc_util_decode_json_object(r, s_json, &j_provider);
-		oidc_warn(r, "j_provider: %s', j_provider);
+		oidc_warn(r, "j_provider: %s", j_provider);
 
 		/* check to see if it is valid metadata */
 		if (oidc_metadata_provider_is_valid(r, c, j_provider, NULL) == FALSE) {
