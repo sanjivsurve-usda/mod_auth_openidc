@@ -592,6 +592,7 @@ static apr_byte_t oidc_metadata_client_register(request_rec *r, oidc_cfg *cfg,
 		if (oidc_util_decode_json_object(r,
 				provider->registration_endpoint_json, &json) == FALSE)
 			return FALSE;
+		oidc_warn(r, "json: %s", json);
 		oidc_util_json_merge(r, json, data);
 		json_decref(json);
 	}

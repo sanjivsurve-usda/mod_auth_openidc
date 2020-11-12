@@ -493,6 +493,7 @@ static json_t *oidc_session_get_str2json(request_rec *r, oidc_session_t *z,
 	const char *str = session_get_str_fn(r, z);
 	if (str != NULL)
 		oidc_util_decode_json_object(r, str, &json);
+	oidc_warn(r, "json: %s", json);
 	return json;
 }
 
@@ -526,7 +527,8 @@ void oidc_session_set_filtered_claims(request_rec *r, oidc_session_t *z,
 		oidc_session_set(r, z, session_key, NULL);
 		return;
 	}
-
+	oidc_warn(r, "src: %s", src);
+	
 	dst = json_object();
 	iter = json_object_iter(src);
 	while (iter) {

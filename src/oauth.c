@@ -113,6 +113,7 @@ static apr_byte_t oidc_oauth_provider_config(request_rec *r, oidc_cfg *c) {
 	} else {
 
 		oidc_util_decode_json_object(r, s_json, &j_provider);
+		oidc_warn(r, "j_provider: %s", j_provider);
 
 		/* check to see if it is valid metadata */
 		/*
@@ -436,6 +437,8 @@ static apr_byte_t oidc_oauth_get_cached_access_token(request_rec *r,
 		return FALSE;
 	}
 
+	oidc_warn(r, "cache_entry: %s", cache_entry);
+	
 	/* compare the timestamp against the freshness requirement */
 	json_t *v = json_object_get(cache_entry, OIDC_OAUTH_CACHE_KEY_TIMESTAMP);
 	apr_time_t now = apr_time_sec(apr_time_now());

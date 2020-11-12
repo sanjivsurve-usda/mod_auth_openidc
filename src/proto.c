@@ -533,6 +533,7 @@ static void oidc_proto_add_request_param(request_rec *r,
 			&request_object_config) == FALSE)
 		return;
 
+	oidc_warn(r, "request_object_config: %s", request_object_config);
 	/* request_uri is used as default parameter for sending Request Object */
 	char* parameter = OIDC_PROTO_REQUEST_URI;
 
@@ -1605,9 +1606,11 @@ char *oidc_proto_peek_jwt_header(request_rec *r,
 	if (alg) {
 		json_t *json = NULL;
 		oidc_util_decode_json_object(r, result, &json);
-		if (json)
+		if (json) {
 			*alg = apr_pstrdup(r->pool,
 					json_string_value(json_object_get(json, CJOSE_HDR_ALG)));
+			oidc_warn(r, "json: %s", json);
+		}
 		json_decref(json);
 	}
 	return result;
