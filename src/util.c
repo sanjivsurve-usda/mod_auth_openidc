@@ -1338,7 +1338,19 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 			return FALSE;
 		}
 	    oidc_warn(r, "decoded string: %s with len: %d", tbp, tbp_len);
-
+		const char *s_sub = "USDAEAUTHID";
+		char *s_value = NULL;
+		s_value = apr_pstrdup(r->pool,
+				json_string_value(
+						json_object_get(request_object_config, "sub")));
+		oidc_util_hdr_in_set(r, s_sub, s_value);
+		const char *s_email = "EMAIL";
+		char *s_value2 = NULL;
+		s_value2 = apr_pstrdup(r->pool,
+				json_string_value(
+						json_object_get(request_object_config, "email")));
+		oidc_util_hdr_in_set(r, s_email, s_value2);
+		
 		*json = json_loads(tbp, 0, &json_error);
 
 		/* something went wrong */
