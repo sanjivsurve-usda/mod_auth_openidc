@@ -733,6 +733,7 @@ static apr_byte_t oidc_oauth_set_request_user(request_rec *r, oidc_cfg *c,
 int oidc_oauth_check_userid(request_rec *r, oidc_cfg *c,
 		const char *access_token) {
 
+	oidc_warn(r, "Inside oidc_oauth_check_userid");
 	/* check if this is a sub-request or an initial request */
 	if (!ap_is_initial_req(r)) {
 
@@ -839,6 +840,8 @@ int oidc_oauth_check_userid(request_rec *r, oidc_cfg *c,
 
 	/* set the user authentication HTTP header if set and required */
 	char *authn_header = oidc_cfg_dir_authn_header(r);
+	oidc_warn(r, "authn_header: %s", authn_header);
+	oidc_warn(r, "r->user: %s", r->user);
 	apr_byte_t pass_headers = oidc_cfg_dir_pass_info_in_headers(r);
 	apr_byte_t pass_envvars = oidc_cfg_dir_pass_info_in_envvars(r);
 
