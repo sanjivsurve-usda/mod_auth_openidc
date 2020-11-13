@@ -1338,20 +1338,24 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 			return FALSE;
 		}
 	    oidc_warn(r, "decoded string: %s with len: %d", tbp, tbp_len);
+		*json = json_loads(tbp, 0, &json_error);
+		oidc_warn(r, "json loaded");		
 		const char *s_sub = "USDAEAUTHID";
 		char *s_value = NULL;
 		s_value = apr_pstrdup(r->pool,
 				json_string_value(
-						json_object_get(request_object_config, "sub")));
+						json_object_get(*json, "sub")));
 		oidc_util_hdr_in_set(r, s_sub, s_value);
+		oidc_warn(r, "USDAEAUTHID %s is added as header", s_value);
+		
 		const char *s_email = "EMAIL";
 		char *s_value2 = NULL;
 		s_value2 = apr_pstrdup(r->pool,
 				json_string_value(
-						json_object_get(request_object_config, "email")));
+						json_object_get(*json, "email")));
 		oidc_util_hdr_in_set(r, s_email, s_value2);
-		
-		*json = json_loads(tbp, 0, &json_error);
+		oidc_warn(r, "email %s is added as header", s_value2);
+
 
 		/* something went wrong */
 		/*
