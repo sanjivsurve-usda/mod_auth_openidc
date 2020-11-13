@@ -325,7 +325,6 @@ static apr_byte_t oidc_provider_static_config(request_rec *r, oidc_cfg *c,
 	} else {
 
 		oidc_util_decode_json_object(r, s_json, &j_provider);
-		oidc_warn(r, "j_provider: %s", j_provider);
 
 		/* check to see if it is valid metadata */
 		if (oidc_metadata_provider_is_valid(r, c, j_provider, NULL) == FALSE) {
@@ -1811,7 +1810,6 @@ static apr_byte_t oidc_set_request_user(request_rec *r, oidc_cfg *c,
 				c->remote_user_claim.replace, jwt->payload.value.json,
 				&remote_user);
 	} else {
-		oidc_warn(r, "claims: %s", claims);
 		oidc_util_json_merge(r, jwt->payload.value.json, claims);
 		rc = oidc_get_remote_user(r, claim_name, c->remote_user_claim.reg_exp,
 				c->remote_user_claim.replace, claims, &remote_user);
@@ -4050,14 +4048,12 @@ static void oidc_authz_get_claims_and_idtoken(request_rec *r, json_t **claims,
 			OIDC_REQUEST_STATE_KEY_CLAIMS);
 	if (s_claims != NULL) {
 		oidc_util_decode_json_object(r, s_claims, claims);
-		oidc_warn(r, "claims: %s", claims);
 	}
 
 	const char *s_id_token = oidc_request_state_get(r,
 			OIDC_REQUEST_STATE_KEY_IDTOKEN);
 	if (s_id_token != NULL) {
 		oidc_util_decode_json_object(r, s_id_token, id_token);
-		oidc_warn(r, "id_token: %s", id_token);
 	}
 }
 
