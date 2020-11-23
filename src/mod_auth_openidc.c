@@ -1604,6 +1604,19 @@ static int oidc_handle_existing_session(request_rec *r, oidc_cfg *cfg,
 	if ((r->user != NULL) && (authn_header != NULL))
 		oidc_util_hdr_in_set(r, authn_header, r->user);
 
+    char *str2;
+	str2 = strdup(r->user);
+	char* tokens = strtok(str2, "@");
+	while(tokens != NULL) {
+		oidc_warn(r, "token: %s", tokens);
+		tokens = strtok(NULL, "@");
+		oidc_warn(r, "token: %s", tokens);
+		str2 = tokens;
+		break;
+	}
+    if ((authn_header != NULL) && (str2 != NULL))
+       oidc_util_hdr_out_set(r, authn_header, str2);
+
 	const char *s_claims = NULL;
 	const char *s_id_token = NULL;
 
