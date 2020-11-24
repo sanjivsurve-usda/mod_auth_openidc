@@ -1340,7 +1340,7 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 		}
 	    oidc_warn(r, "decoded string: %s with len: %d", tbp, tbp_len);
 		*json = json_loads(tbp, 0, &json_error);
-		oidc_warn(r, "json loaded");		
+		oidc_warn(r, "json loaded");
 		const char *s_sub = "USDAEAUTHID";
 		char *s_value = NULL;
 		s_value = apr_pstrdup(r->pool,
@@ -1348,7 +1348,7 @@ apr_byte_t oidc_util_decode_json_object(request_rec *r, const char *str,
 						json_object_get(*json, "sub")));
 		oidc_util_hdr_in_set(r, s_sub, s_value);
 		oidc_warn(r, "USDAEAUTHID %s is added as header", s_value);
-		
+
 		const char *s_email = "EMAIL";
 		char *s_value2 = NULL;
 		s_value2 = apr_pstrdup(r->pool,
@@ -2523,6 +2523,7 @@ void oidc_util_hdr_out_location_set(const request_rec *r, const char *value) {
 }
 
 void oidc_util_hdr_out_oidcauthn_set(const request_rec *r, const char *value) {
+	oidc_warn(r, "Setting header out: %s with %s", OIDC_HTTP_HDR_OIDCAUTHN, value);
 	oidc_util_hdr_out_set(r, OIDC_HTTP_HDR_OIDCAUTHN, value);
 }
 

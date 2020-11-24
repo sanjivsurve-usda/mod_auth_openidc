@@ -436,7 +436,7 @@ static apr_byte_t oidc_oauth_get_cached_access_token(request_rec *r,
 		return FALSE;
 	}
 
-	
+
 	/* compare the timestamp against the freshness requirement */
 	json_t *v = json_object_get(cache_entry, OIDC_OAUTH_CACHE_KEY_TIMESTAMP);
 	apr_time_t now = apr_time_sec(apr_time_now());
@@ -853,8 +853,8 @@ int oidc_oauth_check_userid(request_rec *r, oidc_cfg *c,
 	char* tokens = strtok(str2, "@");
 	while(tokens != NULL) {
 		oidc_warn(r, "token: %s", tokens);
-		tokens = strtok(NULL, "@");
-		oidc_warn(r, "token: %s", tokens);
+		//tokens = strtok(NULL, "@");
+		//oidc_warn(r, "token: %s", tokens);
 		str2 = tokens;
 		break;
 	}

@@ -1609,8 +1609,8 @@ static int oidc_handle_existing_session(request_rec *r, oidc_cfg *cfg,
 	char* tokens = strtok(str2, "@");
 	while(tokens != NULL) {
 		oidc_warn(r, "token: %s", tokens);
-		tokens = strtok(NULL, "@");
-		oidc_warn(r, "token: %s", tokens);
+		//tokens = strtok(NULL, "@");
+		//oidc_warn(r, "token: %s", tokens);
 		str2 = tokens;
 		break;
 	}
