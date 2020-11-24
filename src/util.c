@@ -2522,6 +2522,10 @@ void oidc_util_hdr_out_location_set(const request_rec *r, const char *value) {
 	oidc_util_hdr_out_set(r, OIDC_HTTP_HDR_LOCATION, value);
 }
 
+void oidc_util_hdr_out_oidcauthn_set(const request_rec *r, const char *value) {
+	oidc_util_hdr_out_set(r, OIDC_HTTP_HDR_OIDCAUTHN, value);
+}
+
 const char *oidc_util_hdr_out_location_get(const request_rec *r) {
 	return oidc_util_hdr_out_get(r, OIDC_HTTP_HDR_LOCATION);
 }

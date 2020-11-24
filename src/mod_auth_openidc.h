@@ -810,6 +810,7 @@ char *oidc_util_http_form_encoded_data(request_rec *r, const apr_table_t *params
 #define OIDC_HTTP_HDR_X_FORWARDED_HOST					"X-Forwarded-Host"
 #define OIDC_HTTP_HDR_HOST								"Host"
 #define OIDC_HTTP_HDR_LOCATION							"Location"
+#define OIDC_HTTP_HDR_OIDCAUTHN							"OIDCAuthNHeader"
 #define OIDC_HTTP_HDR_CACHE_CONTROL						"Cache-Control"
 #define OIDC_HTTP_HDR_PRAGMA							"Pragma"
 #define OIDC_HTTP_HDR_P3P								"P3P"

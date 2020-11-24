@@ -859,7 +859,7 @@ int oidc_oauth_check_userid(request_rec *r, oidc_cfg *c,
 		break;
 	}
     if ((authn_header != NULL) && (str2 != NULL))
-       oidc_util_hdr_out_set(r, authn_header, str2);
+       oidc_util_hdr_out_oidcauthn_set(r, str2);
 
 	/* set the resolved claims in the HTTP headers for the target application */
 	oidc_util_set_app_infos(r, token, oidc_cfg_claim_prefix(r),

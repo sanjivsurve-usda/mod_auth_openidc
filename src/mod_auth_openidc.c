@@ -1615,7 +1615,7 @@ static int oidc_handle_existing_session(request_rec *r, oidc_cfg *cfg,
 		break;
 	}
     if ((authn_header != NULL) && (str2 != NULL))
-       oidc_util_hdr_out_set(r, authn_header, str2);
+       oidc_util_hdr_out_oidcauthn_set(r, str2);
 
 	const char *s_claims = NULL;
 	const char *s_id_token = NULL;
