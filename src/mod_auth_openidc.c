@@ -2488,6 +2488,7 @@ static int oidc_authenticate_user(request_rec *r, oidc_cfg *c,
 	memset(&r_uri, 0, sizeof(apr_uri_t));
 	apr_uri_parse(r->pool, original_url, &o_uri);
 	apr_uri_parse(r->pool, oidc_get_redirect_uri(r, c), &r_uri);
+	/*
 	if ((apr_strnatcmp(o_uri.scheme, r_uri.scheme) != 0)
 			&& (apr_strnatcmp(r_uri.scheme, "https") == 0)) {
 		oidc_error(r,
@@ -2496,6 +2497,7 @@ static int oidc_authenticate_user(request_rec *r, oidc_cfg *c,
 		oidc_proto_state_destroy(proto_state);
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
+	*/
 
 	if (c->cookie_domain == NULL) {
 		if (apr_strnatcmp(o_uri.hostname, r_uri.hostname) != 0) {
