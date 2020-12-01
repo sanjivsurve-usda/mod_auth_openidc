@@ -2488,7 +2488,7 @@ static int oidc_authenticate_user(request_rec *r, oidc_cfg *c,
 	memset(&r_uri, 0, sizeof(apr_uri_t));
 	apr_uri_parse(r->pool, original_url, &o_uri);
 	apr_uri_parse(r->pool, oidc_get_redirect_uri(r, c), &r_uri);
-	/*
+	/* Commented to allow proxy url
 	if ((apr_strnatcmp(o_uri.scheme, r_uri.scheme) != 0)
 			&& (apr_strnatcmp(r_uri.scheme, "https") == 0)) {
 		oidc_error(r,
@@ -2502,6 +2502,7 @@ static int oidc_authenticate_user(request_rec *r, oidc_cfg *c,
 	if (c->cookie_domain == NULL) {
 		if (apr_strnatcmp(o_uri.hostname, r_uri.hostname) != 0) {
 			char *p = strstr(o_uri.hostname, r_uri.hostname);
+			/* Commented to allow proxy url
 			if ((p == NULL) || (apr_strnatcmp(r_uri.hostname, p) != 0)) {
 				oidc_error(r,
 						"the URL hostname (%s) of the configured " OIDCRedirectURI " does not match the URL hostname of the URL being accessed (%s): the \"state\" and \"session\" cookies will not be shared between the two!",
@@ -2509,6 +2510,7 @@ static int oidc_authenticate_user(request_rec *r, oidc_cfg *c,
 				oidc_proto_state_destroy(proto_state);
 				return HTTP_INTERNAL_SERVER_ERROR;
 			}
+			*/
 		}
 	} else {
 		if (!oidc_util_cookie_domain_valid(r_uri.hostname, c->cookie_domain)) {
